@@ -1,0 +1,71 @@
+type Agent @entity {
+  id: ID! # wallet address
+  wallet: String!
+  moltbookId: String
+  eloRating: Int!
+  totalMatches: Int!
+  wins: Int!
+  losses: Int!
+  draws: Int!
+  totalWagered: BigInt!
+  totalWinnings: BigInt!
+  registeredAt: BigInt!
+  achievements: [Achievement!]! @derivedFrom(field: "agent")
+  matchesAsAgent1: [Match!]! @derivedFrom(field: "agent1")
+  matchesAsAgent2: [Match!]! @derivedFrom(field: "agent2")
+}
+
+type Match @entity {
+  id: ID! # matchId (bytes32)
+  agent1: Agent!
+  agent2: Agent!
+  wager: BigInt!
+  gameType: String
+  winner: String
+  payout: BigInt
+  status: String! # Created, Settled, Cancelled
+  createdAt: BigInt!
+  settledAt: BigInt
+  cancelReason: String
+}
+
+type Tournament @entity {
+  id: ID! # tournamentId
+  name: String!
+  entryFee: BigInt!
+  prizePool: BigInt!
+  participantCount: Int!
+  status: String! # Registration, Active, Completed
+  participants: [TournamentParticipant!]! @derivedFrom(field: "tournament")
+  winners: [String!]
+  payouts: [BigInt!]
+  createdAt: BigInt!
+}
+
+type TournamentParticipant @entity {
+  id: ID! # tournamentId-participant
+  tournament: Tournament!
+  participant: String!
+  registeredAt: BigInt!
+}
+
+type Achievement @entity {
+  id: ID! # agent-achievement
+  agent: Agent!
+  name: String!
+  unlockedAt: BigInt!
+}
+
+type Deposit @entity {
+  id: ID! # txHash
+  agent: String!
+  amount: BigInt!
+  timestamp: BigInt!
+}
+
+type Withdrawal @entity {
+  id: ID! # txHash
+  agent: String!
+  amount: BigInt!
+  timestamp: BigInt!
+}

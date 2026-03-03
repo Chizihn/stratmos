@@ -1,0 +1,3 @@
+app/agent/[address]/page.tsx(25,64): error TS2305: Module '"@/hooks/useContracts"' has no exported member 'AgentData'.
+components/ConnectWalletButton.tsx(85,37): error TS2339: Property 'formatted' does not exist on type '{ decimals: number; symbol: string; value: bigint; }'.
+components/ConnectWalletButton.tsx(109,47): error TS2339: Property 'formatted' does not exist on type '{ decimals: number; symbol: string; value: bigint; }'.

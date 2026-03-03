@@ -1,0 +1,34 @@
+name: stratmos-indexer
+description: Envio HyperIndex for Stratmos Agent Platform
+networks:
+  - id: 10143
+    rpc_config:
+      url: https://testnet-rpc.monad.xyz
+    start_block: 0  # Replace with actual deployment block number
+    contracts:
+      - name: WagerEscrow
+        address: "0xeD28469320090d1f3E1E6Dc454ebA6f85c8C38Ff"
+        handler: src/handlers/WagerEscrowHandler.ts
+        events:
+          - event: MatchCreated(bytes32 indexed matchId, address indexed agent1, address indexed agent2, uint256 wager)
+          - event: MatchSettled(bytes32 indexed matchId, address winner, uint256 payout)
+          - event: MatchCancelled(bytes32 indexed matchId, string reason)
+          - event: Deposited(address indexed agent, uint256 amount)
+          - event: Withdrawn(address indexed agent, uint256 amount)
+
+      - name: AgentRegistry
+        address: "0xcADDdD24c24a8d4D8674832Cd154001A8763B364"
+        handler: src/handlers/AgentRegistryHandler.ts
+        events:
+          - event: AgentRegistered(address indexed wallet, string moltbookId, uint256 initialElo)
+          - event: StatsUpdated(address indexed agent, uint256 newElo, bool won)
+          - event: AchievementUnlocked(address indexed agent, string achievement)
+
+      - name: TournamentPool
+        address: "0x2CE17284b28641EfFC3d438D3E499f92714d2A84"
+        handler: src/handlers/TournamentHandler.ts
+        events:
+          - event: TournamentCreated(uint256 indexed tournamentId, string name, uint256 entryFee)
+          - event: ParticipantRegistered(uint256 indexed tournamentId, address indexed participant)
+          - event: TournamentStarted(uint256 indexed tournamentId, uint256 participantCount)
+          - event: PrizesDistributed(uint256 indexed tournamentId, address[] winners, uint256[] amounts)
